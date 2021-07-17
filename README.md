@@ -7,5 +7,7 @@ Los conceptos enseñados son:
 - Arquitectura MVC en aplicación de escritorio
 ![image](https://user-images.githubusercontent.com/37912542/126043780-09818584-373c-4061-945e-a23a7884d805.png)
 - Interfaces gráficas usando Swing (JFrame, Tabbed Pane, Panel, Label, text field, combo box, check box)
+- Captura de eventos y valores sobre los componentes de la interfaz
+![image](https://user-images.githubusercontent.com/37912542/126043822-ce4f2807-945f-4398-b138-f5f4a8d0cab4.png)
 - Clases, Objetos, Herencia, Polimorfismo
 - Listas (LinkedList, ArrayList)
