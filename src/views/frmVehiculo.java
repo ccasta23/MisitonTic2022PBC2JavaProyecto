@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package views;
 
 import classes.clsCarro;
+import classes.clsVehiculo;
+import controladores.ctlVehiculos;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -18,12 +20,16 @@ public class frmVehiculo extends javax.swing.JFrame {
 
     
     LinkedList<clsCarro> carros; //Declarar variable
+    ctlVehiculos controlador;
+    
     
     /**
      * Creates new form frmVehiculo
      */
     public frmVehiculo() {
         initComponents();
+        //Enlazar la capa controlador
+        controlador=new ctlVehiculos();
         carros = new LinkedList<>(); //Asinar valor inicial (Lista vacía)
         carros.add(new clsCarro(false, "001", "Chevrolet", 4, "Azul", 24));
         carros.add(new clsCarro(true, "002", "Mazda", 6, "Verde", 35));
@@ -137,6 +143,11 @@ public class frmVehiculo extends javax.swing.JFrame {
         });
 
         btnEliminarCarro.setText("Eliminar");
+        btnEliminarCarro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarCarroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlCarrosLayout = new javax.swing.GroupLayout(pnlCarros);
         pnlCarros.setLayout(pnlCarrosLayout);
@@ -290,6 +301,8 @@ public class frmVehiculo extends javax.swing.JFrame {
                 carros.add(carro_nuevo);
                 mostrarListadoVehiculos();
                 limpiarFormularioCarros();
+                //Ejecutar el método crear del controlador
+                controlador.crearVehiculo(carro_nuevo);
                 JOptionPane.showMessageDialog(pnlCarros, "El carro fue creado exitosamente");
             }
             
@@ -307,6 +320,9 @@ public class frmVehiculo extends javax.swing.JFrame {
         } else {
             //Buscar el código ingresado por la persona en nuestro listado de carros
             boolean encontrado = false;
+            
+            //Consultar un carro - Controlador
+            clsVehiculo carro_consultado = controlador.obtenerVehiculo(codigoBuscado, "Carro");
             
             for (clsCarro carro : carros) {
                 if(carro.getCodigo().equals(codigoBuscado) ){
@@ -355,6 +371,8 @@ public class frmVehiculo extends javax.swing.JFrame {
                     carros.set(index, carro_nuevo);
                     mostrarListadoVehiculos();
                     limpiarFormularioCarros();
+                    //Actualizar carro - Controlador
+                    controlador.actualizarVehiculo(codigoBuscado, carro_nuevo);
                     JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
                     
                     encontrado = true;
@@ -370,6 +388,41 @@ public class frmVehiculo extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_btnActualizarCarroActionPerformed
+
+    private void btnEliminarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarCarroActionPerformed
+        //Capturar el código que está escrito
+        String codigoBuscado = txtCodigoCarro.getText();
+        if(codigoBuscado.equals("")){
+            JOptionPane.showMessageDialog(pnlCarros, "Para eliminar debe diligenciar el campo código");
+        } else {
+            //Buscar el código ingresado por la persona en nuestro listado de carros
+            boolean encontrado = false;
+            
+            for (clsCarro carro : carros) {
+                if(carro.getCodigo().equals(codigoBuscado) ){
+                    //¿Está seguro que desea eliminar?
+                    int respuesta = JOptionPane.showConfirmDialog(pnlCarros, "¿Está seguro que desea eliminar el registro?");
+                    if( respuesta == JOptionPane.OK_OPTION ){
+                        //Si el usuario contesta que si, ELIMINAR
+                        carros.remove(carro);
+                        mostrarListadoVehiculos();
+                        limpiarFormularioCarros();
+                        //Eliminar el registro - CONTROLADOR
+                        controlador.eliminarVehiculo(carro);
+                        JOptionPane.showMessageDialog(pnlCarros, "Registro eliminado");
+                    }
+                    encontrado = true;
+                    break;
+                }
+            }
+            
+            if( !encontrado ){
+                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+                limpiarFormularioCarros();
+            }
+            
+        }
+    }//GEN-LAST:event_btnEliminarCarroActionPerformed
     
     public void mostrarListadoVehiculos(){
         DefaultListModel model = new DefaultListModel();
