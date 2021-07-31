@@ -12,13 +12,17 @@ package classes;
 public class clsCarro extends clsVehiculo{
     
     //Atributos
+    private int idCarro;
     private boolean automatico;
     
     //Constructor
-    public clsCarro(boolean automatico, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
-        super(codigo,marca, numeroLlantas, color, caballosDeFuerza);
+
+    public clsCarro(int idCarro, boolean automatico, int idVehiculo, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
+        super(idVehiculo, codigo, marca, numeroLlantas, color, caballosDeFuerza);
+        this.idCarro = idCarro;
         this.automatico = automatico;
     }
+    
     
     //Métodos
     @Override //Anotación de sobrescritura
@@ -78,6 +82,20 @@ public class clsCarro extends clsVehiculo{
      */
     public void setAutomatico(boolean automatico) {
         this.automatico = automatico;
+    }
+
+    /**
+     * @return the idCarro
+     */
+    public int getIdCarro() {
+        return idCarro;
+    }
+
+    /**
+     * @param idCarro the idCarro to set
+     */
+    public void setIdCarro(int idCarro) {
+        this.idCarro = idCarro;
     }
     
 }

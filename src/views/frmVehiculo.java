@@ -31,9 +31,10 @@ public class frmVehiculo extends javax.swing.JFrame {
         //Enlazar la capa controlador
         controlador=new ctlVehiculos();
         carros = new LinkedList<>(); //Asinar valor inicial (Lista vacía)
-        carros.add(new clsCarro(false, "001", "Chevrolet", 4, "Azul", 24));
-        carros.add(new clsCarro(true, "002", "Mazda", 6, "Verde", 35));
-        carros.add(new clsCarro(false, "003", "Hyundai", 8, "Amarillo", 46));
+        //Antes se colocaban algunos registros iniciales, pero ya los registros serán consultados en BD
+//        carros.add(new clsCarro(false, "001", "Chevrolet", 4, "Azul", 24));
+//        carros.add(new clsCarro(true, "002", "Mazda", 6, "Verde", 35));
+//        carros.add(new clsCarro(false, "003", "Hyundai", 8, "Amarillo", 46));
         mostrarListadoVehiculos();
     }
 
@@ -67,6 +68,10 @@ public class frmVehiculo extends javax.swing.JFrame {
         btnConsultarCarro = new javax.swing.JButton();
         btnActualizarCarro = new javax.swing.JButton();
         btnEliminarCarro = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtIdVehiculo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtIdCarro = new javax.swing.JTextField();
         pnlCamiones = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,6 +116,8 @@ public class frmVehiculo extends javax.swing.JFrame {
 
         lblMarcaCarro.setText("Marca:");
 
+        txtMarcaCarro.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
         lblNumeroLlantasCarro.setText("# Llantas: ");
 
         cbNumeroLlantasCarro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "4", "6", "8", "10" }));
@@ -149,6 +156,14 @@ public class frmVehiculo extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Id Vehiculo:");
+
+        txtIdVehiculo.setEditable(false);
+
+        jLabel2.setText("Id Carro:");
+
+        txtIdCarro.setEditable(false);
+
         javax.swing.GroupLayout pnlCarrosLayout = new javax.swing.GroupLayout(pnlCarros);
         pnlCarros.setLayout(pnlCarrosLayout);
         pnlCarrosLayout.setHorizontalGroup(
@@ -156,6 +171,10 @@ public class frmVehiculo extends javax.swing.JFrame {
             .addGroup(pnlCarrosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCarrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlCarrosLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIdVehiculo))
                     .addGroup(pnlCarrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(pnlCarrosLayout.createSequentialGroup()
                             .addComponent(lblCodigoCarro)
@@ -168,11 +187,12 @@ public class frmVehiculo extends javax.swing.JFrame {
                     .addGroup(pnlCarrosLayout.createSequentialGroup()
                         .addComponent(lblCaballosFuerzaCarro)
                         .addGap(18, 18, 18)
-                        .addComponent(txtCaballosFuerzaCarro))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCarrosLayout.createSequentialGroup()
-                        .addComponent(btnCrearCarro)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConsultarCarro)))
+                        .addGroup(pnlCarrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlCarrosLayout.createSequentialGroup()
+                                .addComponent(btnCrearCarro)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnConsultarCarro))
+                            .addComponent(txtCaballosFuerzaCarro))))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCarrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCarrosLayout.createSequentialGroup()
@@ -190,7 +210,11 @@ public class frmVehiculo extends javax.swing.JFrame {
                                 .addComponent(btnActualizarCarro)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnEliminarCarro)))
-                        .addGap(0, 109, Short.MAX_VALUE)))
+                        .addGap(0, 109, Short.MAX_VALUE))
+                    .addGroup(pnlCarrosLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtIdCarro)))
                 .addContainerGap())
         );
         pnlCarrosLayout.setVerticalGroup(
@@ -213,13 +237,19 @@ public class frmVehiculo extends javax.swing.JFrame {
                     .addComponent(lblCaballosFuerzaCarro)
                     .addComponent(txtCaballosFuerzaCarro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboxAutomaticoCarro))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(pnlCarrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtIdVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtIdCarro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(pnlCarrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearCarro)
                     .addComponent(btnConsultarCarro)
                     .addComponent(btnActualizarCarro)
                     .addComponent(btnEliminarCarro))
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addGap(85, 85, 85))
         );
 
         jTabbedPane2.addTab("Carros", pnlCarros);
@@ -286,9 +316,9 @@ public class frmVehiculo extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(pnlCarros, "Todos los campos del formulario son obligatorios");
             } else {
                 //Si la información está correcta, crear un nuevo objeto
-                //Crear un objeto de la clase clsCarro
-                clsCarro carro_nuevo = new clsCarro(automatico, codigo, marca, numeroLlantas, color, caballosFuerza);
-
+                //Crear un objeto de la clase clsCarro (Los id's se colocan en 0 porque serán colocados por la BD cuando se registren)
+                clsCarro carro_nuevo = new clsCarro(0, automatico, 0, codigo, marca, numeroLlantas, color, caballosFuerza);
+                //Mostrar los datos en consola
                 System.out.println("------------------");
                 System.out.println("Código: " + carro_nuevo.getCodigo());
                 System.out.println("Marca: " + carro_nuevo.getMarca());
@@ -298,11 +328,11 @@ public class frmVehiculo extends javax.swing.JFrame {
                 System.out.println("Automático: " + carro_nuevo.isAutomatico());
                 
                 //Añadir el nuevo carro al listado de carros
-                carros.add(carro_nuevo);
-                mostrarListadoVehiculos();
-                limpiarFormularioCarros();
+                //carros.add(carro_nuevo); //Ya no es necesario tener un listado de carros, se almacena directamente en la BD
                 //Ejecutar el método crear del controlador
                 controlador.crearVehiculo(carro_nuevo);
+                mostrarListadoVehiculos();
+                limpiarFormularioCarros();
                 JOptionPane.showMessageDialog(pnlCarros, "El carro fue creado exitosamente");
             }
             
@@ -319,112 +349,180 @@ public class frmVehiculo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(pnlCarros, "Para consultar debe diligenciar el campo código");
         } else {
             //Buscar el código ingresado por la persona en nuestro listado de carros
-            boolean encontrado = false;
+//            boolean encontrado = false;
             
             //Consultar un carro - Controlador
-            clsVehiculo carro_consultado = controlador.obtenerVehiculo(codigoBuscado, "Carro");
+            clsCarro carro = (clsCarro) controlador.obtenerVehiculo(codigoBuscado, "Carro");
             
-            for (clsCarro carro : carros) {
-                if(carro.getCodigo().equals(codigoBuscado) ){
-                    //¡LO ENCONTRÉ!
-                    txtCodigoCarro.setText(carro.getCodigo());
-                    txtMarcaCarro.setText(carro.getMarca());
-                    txtColorCarro.setText(carro.getColor());
-                    txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
-                    
-                    cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
-                    cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
-                    encontrado = true;
-                    break;
-                }
-            }
-            
-            if( !encontrado ){
-                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+            if(carro == null){
+                //No encontró el carro en la Base de datos
                 limpiarFormularioCarros();
+                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+            } else {
+                //SI se encontró el registro :D
+                txtCodigoCarro.setText(carro.getCodigo());
+                txtMarcaCarro.setText(carro.getMarca());
+                txtColorCarro.setText(carro.getColor());
+                txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
+
+                cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
+                cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
+                
+                //Modificar los campos de ID
+                txtIdVehiculo.setText(carro.getIdVehiculo()+""); //De (int) a (String)
+                txtIdCarro.setText(carro.getIdCarro()+""); //De (int) a (String)
             }
+            
+            //Esta era la manera anterior en la que trabajabamos antes de las BD
+            //Buscabamos los datos en la lista que teniamos.
+//            for (clsCarro carro : carros) {
+//                if(carro.getCodigo().equals(codigoBuscado) ){
+//                    //¡LO ENCONTRÉ!
+//                    txtCodigoCarro.setText(carro.getCodigo());
+//                    txtMarcaCarro.setText(carro.getMarca());
+//                    txtColorCarro.setText(carro.getColor());
+//                    txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
+//                    
+//                    cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
+//                    cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
+//                    encontrado = true;
+//                    break;
+//                }
+//            }
+//            
+//            if( !encontrado ){
+//                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+//                limpiarFormularioCarros();
+//            }
             
         }
     }//GEN-LAST:event_btnConsultarCarroActionPerformed
 
     private void btnActualizarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCarroActionPerformed
         //Capturar el código que está escrito
-        String codigoBuscado = txtCodigoCarro.getText();
-        if(codigoBuscado.equals("")){
-            JOptionPane.showMessageDialog(pnlCarros, "Para consultar debe diligenciar el campo código");
+        String idVehiculo = txtIdVehiculo.getText();
+        String idCarro = txtIdCarro.getText();
+        if(idVehiculo.equals("") || idCarro.equals("")){
+            JOptionPane.showMessageDialog(pnlCarros, "Para actualizar un registro, primero debe consultarlo");
         } else {
-            //Buscar el código ingresado por la persona en nuestro listado de carros
-            boolean encontrado = false;
-            int index = 0;
-            for (clsCarro carro : carros) {
-                if(carro.getCodigo().equals(codigoBuscado) ){
-                    //¡LO ENCONTRÉ!
-                    String codigo = txtCodigoCarro.getText();
-                    String marca = txtMarcaCarro.getText();
-                    int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
-                    String color = txtColorCarro.getText();
-                    int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
-                    boolean automatico = cboxAutomaticoCarro.isSelected();
-                    
-                    clsCarro carro_nuevo = new clsCarro(automatico, codigo, marca, numeroLlantas, color, caballosFuerza);
-                    
-                    carros.set(index, carro_nuevo);
-                    mostrarListadoVehiculos();
-                    limpiarFormularioCarros();
-                    //Actualizar carro - Controlador
-                    controlador.actualizarVehiculo(codigoBuscado, carro_nuevo);
-                    JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
-                    
-                    encontrado = true;
-                    break;
-                }
-                index++;
+            int idVehiculoInt = Integer.parseInt(idVehiculo);
+            int idCarroInt = Integer.parseInt(idCarro);
+            String codigo = txtCodigoCarro.getText();
+            String marca = txtMarcaCarro.getText();
+            int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
+            String color = txtColorCarro.getText();
+            int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
+            boolean automatico = cboxAutomaticoCarro.isSelected();
+            //Crear nuevo objeto con los datos actualizados
+            clsCarro carro_nuevo = new clsCarro(idCarroInt,automatico, idVehiculoInt,codigo, marca, numeroLlantas, color, caballosFuerza);
+            
+            //Actualizar carro - Controlador
+            if ( controlador.actualizarVehiculo(carro_nuevo)){
+                mostrarListadoVehiculos();
+                limpiarFormularioCarros();
+                JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(pnlCarros, "Ocurrió un error al actualizar, por favor verifique los datos");
             }
             
-            if( !encontrado ){
-                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
-                limpiarFormularioCarros();
-            }
+            //Buscar el código ingresado por la persona en nuestro listado de carros
+//            boolean encontrado = false;
+//            int index = 0;
+//            for (clsCarro carro : carros) {
+//                if(carro.getCodigo().equals(codigoBuscado) ){
+//                    //¡LO ENCONTRÉ!
+//                    String codigo = txtCodigoCarro.getText();
+//                    String marca = txtMarcaCarro.getText();
+//                    int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
+//                    String color = txtColorCarro.getText();
+//                    int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
+//                    boolean automatico = cboxAutomaticoCarro.isSelected();
+//                    
+////                    clsCarro carro_nuevo = new clsCarro(automatico, codigo, marca, numeroLlantas, color, caballosFuerza);
+////                    
+////                    carros.set(index, carro_nuevo);
+////                    mostrarListadoVehiculos();
+////                    limpiarFormularioCarros();
+////                    //Actualizar carro - Controlador
+////                    controlador.actualizarVehiculo(codigoBuscado, carro_nuevo);
+////                    JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
+////                    
+////                    encontrado = true;
+////                    break;
+//                }
+//                index++;
+//            }
+//            
+//            if( !encontrado ){
+//                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+//                limpiarFormularioCarros();
+//            }
             
         }
     }//GEN-LAST:event_btnActualizarCarroActionPerformed
 
     private void btnEliminarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarCarroActionPerformed
         //Capturar el código que está escrito
-        String codigoBuscado = txtCodigoCarro.getText();
-        if(codigoBuscado.equals("")){
-            JOptionPane.showMessageDialog(pnlCarros, "Para eliminar debe diligenciar el campo código");
+        String idVehiculo = txtIdVehiculo.getText();
+        String idCarro = txtIdCarro.getText();
+        if(idVehiculo.equals("") || idCarro.equals("")){
+            JOptionPane.showMessageDialog(pnlCarros, "Para eliminar un registro, primero debe consultarlo");
         } else {
-            //Buscar el código ingresado por la persona en nuestro listado de carros
-            boolean encontrado = false;
-            
-            for (clsCarro carro : carros) {
-                if(carro.getCodigo().equals(codigoBuscado) ){
-                    //¿Está seguro que desea eliminar?
-                    int respuesta = JOptionPane.showConfirmDialog(pnlCarros, "¿Está seguro que desea eliminar el registro?");
-                    if( respuesta == JOptionPane.OK_OPTION ){
-                        //Si el usuario contesta que si, ELIMINAR
-                        carros.remove(carro);
-                        mostrarListadoVehiculos();
-                        limpiarFormularioCarros();
-                        //Eliminar el registro - CONTROLADOR
-                        controlador.eliminarVehiculo(carro);
-                        JOptionPane.showMessageDialog(pnlCarros, "Registro eliminado");
-                    }
-                    encontrado = true;
-                    break;
+            int idVehiculoInt = Integer.parseInt(idVehiculo);
+            int idCarroInt = Integer.parseInt(idCarro);
+            String codigo = txtCodigoCarro.getText();
+            String marca = txtMarcaCarro.getText();
+            int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
+            String color = txtColorCarro.getText();
+            int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
+            boolean automatico = cboxAutomaticoCarro.isSelected();
+            //Crear nuevo objeto con los datos actuales del formulario (Incluye los ID's)
+            clsCarro carro_nuevo = new clsCarro(idCarroInt,automatico, idVehiculoInt,codigo, marca, numeroLlantas, color, caballosFuerza);
+            //¿Está seguro que desea eliminar?
+            int respuesta = JOptionPane.showConfirmDialog(pnlCarros, "¿Está seguro que desea eliminar el registro?");
+            if( respuesta == JOptionPane.OK_OPTION ){
+                //Eliminar carro - Controlador
+                if ( controlador.eliminarVehiculo(carro_nuevo)){
+                    mostrarListadoVehiculos();
+                    limpiarFormularioCarros();
+                    JOptionPane.showMessageDialog(pnlCarros, "Carro eliminado con éxito");
+                } else {
+                    JOptionPane.showMessageDialog(pnlCarros, "Ocurrió un error al eliminar, por favor verifique los datos");
                 }
             }
             
-            if( !encontrado ){
-                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
-                limpiarFormularioCarros();
-            }
+            
+            //Buscar el código ingresado por la persona en nuestro listado de carros
+//            boolean encontrado = false;
+//            
+//            for (clsCarro carro : carros) {
+//                if(carro.getCodigo().equals(codigoBuscado) ){
+//                    //¿Está seguro que desea eliminar?
+//                    int respuesta = JOptionPane.showConfirmDialog(pnlCarros, "¿Está seguro que desea eliminar el registro?");
+//                    if( respuesta == JOptionPane.OK_OPTION ){
+//                        //Si el usuario contesta que si, ELIMINAR
+//                        carros.remove(carro);
+//                        mostrarListadoVehiculos();
+//                        limpiarFormularioCarros();
+//                        //Eliminar el registro - CONTROLADOR
+//                        controlador.eliminarVehiculo(carro);
+//                        JOptionPane.showMessageDialog(pnlCarros, "Registro eliminado");
+//                    }
+//                    encontrado = true;
+//                    break;
+//                }
+//            }
+//            
+//            if( !encontrado ){
+//                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+//                limpiarFormularioCarros();
+//            }
             
         }
     }//GEN-LAST:event_btnEliminarCarroActionPerformed
     
     public void mostrarListadoVehiculos(){
+        carros = controlador.listarCarros();
         DefaultListModel model = new DefaultListModel();
         int index =0;
         for (clsCarro carro : carros) {
@@ -443,6 +541,9 @@ public class frmVehiculo extends javax.swing.JFrame {
         
         cbNumeroLlantasCarro.setSelectedIndex(0);
         cboxAutomaticoCarro.setSelected(false);
+        
+        txtIdCarro.setText("");
+        txtIdVehiculo.setText("");
     }
     
     /**
@@ -487,6 +588,8 @@ public class frmVehiculo extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarCarro;
     private javax.swing.JComboBox<String> cbNumeroLlantasCarro;
     private javax.swing.JCheckBox cboxAutomaticoCarro;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JLabel lblCaballosFuerzaCarro;
@@ -502,6 +605,8 @@ public class frmVehiculo extends javax.swing.JFrame {
     private javax.swing.JTextField txtCaballosFuerzaCarro;
     private javax.swing.JTextField txtCodigoCarro;
     private javax.swing.JTextField txtColorCarro;
+    private javax.swing.JTextField txtIdCarro;
+    private javax.swing.JTextField txtIdVehiculo;
     private javax.swing.JTextField txtMarcaCarro;
     // End of variables declaration//GEN-END:variables
 }

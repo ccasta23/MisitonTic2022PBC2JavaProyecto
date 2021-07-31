@@ -15,6 +15,7 @@ import interfaces.ITransporteTerrestre;
 public class clsVehiculo implements IMedioTransporte, ITransporteTerrestre{
     
     //Atributos
+    private int idVehiculo;
     private String codigo;
     private String marca;
     private int numeroLlantas;
@@ -23,13 +24,15 @@ public class clsVehiculo implements IMedioTransporte, ITransporteTerrestre{
     private clsTallerMecanico taller; //Asociación de Agregación
     
     //Constructor
-    public clsVehiculo(String codigo,String marca, int numeroLlantas, String color, int caballosDeFuerza) {
+    public clsVehiculo(int idVehiculo, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
+        this.idVehiculo = idVehiculo;
         this.codigo = codigo;
         this.marca = marca;
         this.numeroLlantas = numeroLlantas;
         this.color = color;
         this.caballosDeFuerza = caballosDeFuerza;
     }
+    
     
     //Métodos
     public void encender(){
@@ -87,7 +90,8 @@ public class clsVehiculo implements IMedioTransporte, ITransporteTerrestre{
      * @return the marca
      */
     public String getMarca() {
-        return marca.toUpperCase(); //Ejemplo del uso de método GET para cambiar el valor del atributo
+        //return marca.toUpperCase(); //Ejemplo del uso de método GET para cambiar el valor del atributo
+        return marca;
     }
 
     /**
@@ -165,6 +169,20 @@ public class clsVehiculo implements IMedioTransporte, ITransporteTerrestre{
      */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    /**
+     * @return the idVehiculo
+     */
+    public int getIdVehiculo() {
+        return idVehiculo;
+    }
+
+    /**
+     * @param idVehiculo the idVehiculo to set
+     */
+    public void setIdVehiculo(int idVehiculo) {
+        this.idVehiculo = idVehiculo;
     }
 
 }

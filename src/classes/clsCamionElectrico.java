@@ -11,13 +11,16 @@ package classes;
  */
 public class clsCamionElectrico extends clsCamion {
     //Atributos
+    private int idCamionElectrico;
     private int nivelCarga;
     
     //Constructor
-    public clsCamionElectrico(int nivelCarga, String remolque, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
-        super(remolque, codigo, marca, numeroLlantas, color, caballosDeFuerza);
+    public clsCamionElectrico(int idCamionElectrico, int nivelCarga, int idCamion, String remolque, int idVehiculo, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
+        super(idCamion, remolque, idVehiculo, codigo, marca, numeroLlantas, color, caballosDeFuerza);
+        this.idCamionElectrico = idCamionElectrico;
         this.nivelCarga = nivelCarga;
     }
+    
     
     //Métodos
     public void cargarBateria(){
@@ -41,6 +44,20 @@ public class clsCamionElectrico extends clsCamion {
      */
     public void setNivelCarga(int nivelCarga) {
         this.nivelCarga = nivelCarga;
+    }
+
+    /**
+     * @return the idCamionElectrico
+     */
+    public int getIdCamionElectrico() {
+        return idCamionElectrico;
+    }
+
+    /**
+     * @param idCamionElectrico the idCamionElectrico to set
+     */
+    public void setIdCamionElectrico(int idCamionElectrico) {
+        this.idCamionElectrico = idCamionElectrico;
     }
     
 }

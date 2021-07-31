@@ -7,6 +7,7 @@ package controladores;
 
 import classes.clsCarro;
 import classes.clsVehiculo;
+import java.util.LinkedList;
 import modelos.*;
 
 /**
@@ -23,8 +24,6 @@ public class ctlVehiculos {
         modeloCarro = new modeloCarro();
         modeloCamion = new modeloCamion();
     }
-    
-    
     
     public void crearVehiculo( clsVehiculo vehiculo ){
         //Crear un nuevo Vehiculo - CONTROLADOR
@@ -47,24 +46,31 @@ public class ctlVehiculos {
         return null;
     }
     
-    public void actualizarVehiculo( String codigo, clsVehiculo vehiculo ){
+    public boolean actualizarVehiculo( clsVehiculo vehiculo ){
         //Actualizar un vehiculo - CONTROLADOR
         if( vehiculo.obtenerTipoMedioTransporte().equals("Carro") ){
             //Debo llamar el modelo de CARRO
-            modeloCarro.actualizarCarro(codigo, (clsCarro) vehiculo );
+            return modeloCarro.actualizarCarro((clsCarro) vehiculo );
         } else if (vehiculo.obtenerTipoMedioTransporte().equals("Camion")){
             //Debo llamar el modelo de CAMIÓN
         }
+        return false;
     }
     
-    public void eliminarVehiculo( clsVehiculo vehiculo ){
+    public boolean eliminarVehiculo( clsVehiculo vehiculo ){
         //Eliminar un vehiculo - CONTROLADOR
         if( vehiculo.obtenerTipoMedioTransporte().equals("Carro") ){
             //Debo llamar el modelo de CARRO
-            modeloCarro.eliminarCarro((clsCarro) vehiculo);
+            return modeloCarro.eliminarCarro((clsCarro) vehiculo);
         } else if (vehiculo.obtenerTipoMedioTransporte().equals("Camion")){
             //Debo llamar el modelo de CAMIÓN
         }
+        return false;
+    }
+    
+    public LinkedList<clsCarro> listarCarros(){
+        //Ejecutar y retornar lo que la clase modelo nos retorna
+        return modeloCarro.listarCarros();
     }
     
 }

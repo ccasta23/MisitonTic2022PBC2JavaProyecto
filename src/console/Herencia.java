@@ -21,7 +21,7 @@ public class Herencia {
     public static void main(String[] args) {
         
         //Crear un objeto de la clase Vehiculo
-        clsVehiculo mi_vehiculo = new clsVehiculo("001","Chevrolet", 4, "Azul", 20);
+        clsVehiculo mi_vehiculo = new clsVehiculo(0,"001","Chevrolet", 4, "Azul", 20);
 //        mi_vehiculo.setMarca("Chevrolet");
 //        mi_vehiculo.setNumeroLlantas(4);
 //        mi_vehiculo.setColor("Azul");
@@ -46,7 +46,7 @@ public class Herencia {
         System.out.println("-----------------------------------------");
         
         //Crear objeto de la clase carro
-        clsCarro mi_carrito = new clsCarro(true,"002", "BMW", 4, "Blanco", 27);
+        clsCarro mi_carrito = new clsCarro(1,true,1,"002", "BMW", 4, "Blanco", 27);
         mi_carrito.encender(); //Ejecutar métodos creados en la clase padre
         System.out.println("¿Es automático?: " + mi_carrito.isAutomatico());
         System.out.println("¿Qué color es?: " + mi_carrito.getColor());
@@ -59,7 +59,7 @@ public class Herencia {
         
         System.out.println("-----------------------------------");
         //Crear objeto de la clase camión
-        clsCamion mi_camion = new clsCamion("Cisterna", "003","Fotón", 8, "Verde", 50);
+        clsCamion mi_camion = new clsCamion(1,"Cisterna",2, "003","Fotón", 8, "Verde", 50);
         mi_camion.unirRemolque();
         mi_camion.soltarRemolque();
         mi_camion.encender();
@@ -71,7 +71,7 @@ public class Herencia {
         System.out.println("--------------------------");
         
         //Crear OBJETO
-        clsCamionElectrico mi_camion_electrico = new clsCamionElectrico(94, "No", "004","Kenworth", 12, "Amarillo", 60);
+        clsCamionElectrico mi_camion_electrico = new clsCamionElectrico(1,94,1, "No",3, "004","Kenworth", 12, "Amarillo", 60);
         mi_camion_electrico.cargarBateria();
         mi_camion_electrico.unirRemolque();
         mi_camion_electrico.encender();

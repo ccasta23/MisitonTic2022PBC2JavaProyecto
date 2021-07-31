@@ -44,13 +44,13 @@ public class Listas {
         String codigo = in.next();
         
         
-        clsCarro carro_usuario = new clsCarro(true, codigo, "", 4, "123", 25);
+        clsCarro carro_usuario = new clsCarro(1,true,1, codigo, "", 4, "123", 25);
         
         carros.add(carro_usuario);
         
-        carros.add( new clsCarro(true, "001", "Chevrolet", 4, "Azul", 20) );
-        carros.add( new clsCarro(false, "002", "Mazda", 8, "Verde", 40) );
-        carros.add( new clsCarro(false, "003", "Hyundai", 4, "Amarillo", 25) );
+        carros.add( new clsCarro(2,true, 2,"001", "Chevrolet", 4, "Azul", 20) );
+        carros.add( new clsCarro(3,false, 3,"002", "Mazda", 8, "Verde", 40) );
+        carros.add( new clsCarro(4,false, 4,"003", "Hyundai", 4, "Amarillo", 25) );
         
         System.out.println(carros);
         

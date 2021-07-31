@@ -13,12 +13,16 @@ import interfaces.ITransporteTerrestre;
  */
 public class clsCamion extends clsVehiculo implements ITransporteTerrestre{
     
+    //Atributos
+    private int idCamion;
     private String remolque;
 
-    public clsCamion(String remolque, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
-        super(codigo, marca, numeroLlantas, color, caballosDeFuerza);
+    //Constructor
+    public clsCamion(int idCamion, String remolque, int idVehiculo, String codigo, String marca, int numeroLlantas, String color, int caballosDeFuerza) {
+        super(idVehiculo, codigo, marca, numeroLlantas, color, caballosDeFuerza);
+        this.idCamion = idCamion;
         this.remolque = remolque;
-    }
+    }    
     
     public void unirRemolque(){
         System.out.println("Uniendo remolque...");
@@ -45,6 +49,20 @@ public class clsCamion extends clsVehiculo implements ITransporteTerrestre{
      */
     public void setRemolque(String remolque) {
         this.remolque = remolque;
+    }
+
+    /**
+     * @return the idCamion
+     */
+    public int getIdCamion() {
+        return idCamion;
+    }
+
+    /**
+     * @param idCamion the idCamion to set
+     */
+    public void setIdCamion(int idCamion) {
+        this.idCamion = idCamion;
     }
     
 }
