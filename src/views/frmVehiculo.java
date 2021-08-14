@@ -6,11 +6,33 @@
 package views;
 
 import classes.clsCarro;
+import classes.clsInformeVehiculoColor;
 import classes.clsVehiculo;
 import controladores.ctlVehiculos;
+import java.awt.BorderLayout;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -37,6 +59,38 @@ public class frmVehiculo extends javax.swing.JFrame {
 //        carros.add(new clsCarro(false, "003", "Hyundai", 8, "Amarillo", 46));
         mostrarListadoVehiculos();
     }
+    
+    private void refrescarInformeCarrosColor(){
+        //Crear el conjunto de datos como lo entiende el gráfico
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        //Consultar los datos desde la BD
+        LinkedList<clsInformeVehiculoColor> informes = controlador.informeVehiculosColor();
+        //Agregar datos a nuestro conjunto de datos (Desde la BD)
+        for (clsInformeVehiculoColor informe : informes) {
+            dataset.setValue(informe.getColor(), informe.getCantidad());
+        }
+        
+        //Agregar datos aleatorios a nuestro conjunto de datos
+//        for (int i = 0; i < 10; i++) {
+//            int random = new Random().nextInt(50);
+//            dataset.setValue("Color " + i + ": " + random, random);
+//        }
+        
+        //Crear gráfico y asignarle el conjunto de datos
+        JFreeChart chart = ChartFactory.createPieChart("Cantidad de vehiculos por color", dataset, true, true, true);
+        //Crear un panel por código. Contenedor del gráfico
+        ChartPanel panel = new ChartPanel(chart);
+        panel.setMouseWheelEnabled(true); //Si el gráfico es muy grande, hacer scroll
+        
+        //Limpiar el panel gráfico antes de agregarle el panel de código
+        pnlInformeVehiculosColor.removeAll();
+        
+        pnlInformeVehiculosColor.setLayout( new BorderLayout() );
+        //Al panel que creamos por UI, agregarle el panel creado por código que contiene la gráfica
+        pnlInformeVehiculosColor.add( panel ); 
+        //Mostrar el componente interno del panel gráfico
+        pnlInformeVehiculosColor.validate();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +106,7 @@ public class frmVehiculo extends javax.swing.JFrame {
         pnlListar = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstVehiculos = new javax.swing.JList<>();
+        btnGenerarExcel = new javax.swing.JButton();
         pnlCarros = new javax.swing.JPanel();
         lblCodigoCarro = new javax.swing.JLabel();
         txtCodigoCarro = new javax.swing.JTextField();
@@ -73,6 +128,8 @@ public class frmVehiculo extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtIdCarro = new javax.swing.JTextField();
         pnlCamiones = new javax.swing.JPanel();
+        pnlInformeVehiculosColor = new javax.swing.JPanel();
+        pnlVehiculosAutomaticos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -87,20 +144,33 @@ public class frmVehiculo extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(lstVehiculos);
 
+        btnGenerarExcel.setText("Generar reporte excel");
+        btnGenerarExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlListarLayout = new javax.swing.GroupLayout(pnlListar);
         pnlListar.setLayout(pnlListarLayout);
         pnlListarLayout.setHorizontalGroup(
             pnlListarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlListarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlListarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGenerarExcel)
+                .addGap(276, 276, 276))
         );
         pnlListarLayout.setVerticalGroup(
             pnlListarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlListarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnGenerarExcel)
                 .addContainerGap())
         );
 
@@ -266,6 +336,32 @@ public class frmVehiculo extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Camiones", pnlCamiones);
+
+        javax.swing.GroupLayout pnlInformeVehiculosColorLayout = new javax.swing.GroupLayout(pnlInformeVehiculosColor);
+        pnlInformeVehiculosColor.setLayout(pnlInformeVehiculosColorLayout);
+        pnlInformeVehiculosColorLayout.setHorizontalGroup(
+            pnlInformeVehiculosColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 699, Short.MAX_VALUE)
+        );
+        pnlInformeVehiculosColorLayout.setVerticalGroup(
+            pnlInformeVehiculosColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 338, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Gráfico vehiculos por color", pnlInformeVehiculosColor);
+
+        javax.swing.GroupLayout pnlVehiculosAutomaticosLayout = new javax.swing.GroupLayout(pnlVehiculosAutomaticos);
+        pnlVehiculosAutomaticos.setLayout(pnlVehiculosAutomaticosLayout);
+        pnlVehiculosAutomaticosLayout.setHorizontalGroup(
+            pnlVehiculosAutomaticosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 699, Short.MAX_VALUE)
+        );
+        pnlVehiculosAutomaticosLayout.setVerticalGroup(
+            pnlVehiculosAutomaticosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 338, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Gráfico vehiculos automaticos", pnlVehiculosAutomaticos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -520,6 +616,95 @@ public class frmVehiculo extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_btnEliminarCarroActionPerformed
+
+    private void btnGenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarExcelActionPerformed
+        //1. Crear libro
+        HSSFWorkbook libro = new HSSFWorkbook();
+        
+        //2. Crear Hoja(s) en el libro
+        HSSFSheet hoja = libro.createSheet();
+        libro.setSheetName(0, "Vehiculos"); //Asignar un nombre a la hoja en ls posición 0
+        
+        //2.9 Crear estilos para las celdas (Opcional)
+        CellStyle estiloCabecera = libro.createCellStyle();
+        estiloCabecera.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex()); //Modificar color de fondo de la celda
+        estiloCabecera.setFillPattern(FillPatternType.SOLID_FOREGROUND); // Hacer que el fondo sea sólido
+        
+        HSSFFont fuente = libro.createFont();
+        fuente.setBold(true); //Colocar la fuente en negrita
+        estiloCabecera.setFont(fuente);
+        
+        String[] cabeceras = new String[]{"Id", "Código", "Marca", "Cantidad Llantas", "Color", "Caballos de Fuerza", "¿Automático?"};
+        
+        //3. Crear filas en las hojas
+        HSSFRow cabecera = hoja.createRow(0);
+        
+        for (int i = 0; i < cabeceras.length; i++) {
+            HSSFCell celdaCabecera = cabecera.createCell(i);
+            celdaCabecera.setCellValue( cabeceras[i] );
+            celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+        }
+//        HSSFCell celdaCabecera = cabecera.createCell(0);
+//        celdaCabecera.setCellValue("Id");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+//        celdaCabecera = cabecera.createCell(1);
+//        celdaCabecera.setCellValue("Código");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+//        celdaCabecera = cabecera.createCell(2);
+//        celdaCabecera.setCellValue("Marca");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+//        celdaCabecera = cabecera.createCell(3);
+//        celdaCabecera.setCellValue("Cantidad Llantas");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+//        celdaCabecera = cabecera.createCell(4);
+//        celdaCabecera.setCellValue("Color");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+//        celdaCabecera = cabecera.createCell(5);
+//        celdaCabecera.setCellValue("Caballos de Fuerza");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+//        celdaCabecera = cabecera.createCell(6);
+//        celdaCabecera.setCellValue("¿Automático?");
+//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
+        
+        for (int i = 0; i < carros.size(); i++) {
+            //3. Crear filas en las hojas
+            HSSFRow fila = hoja.createRow(i + 1);
+
+            //4. Crear celdas en las filas
+            HSSFCell celda = fila.createCell(0);
+            celda.setCellValue(carros.get(i).getIdCarro());
+            celda = fila.createCell(1);
+            celda.setCellValue(carros.get(i).getCodigo());
+            celda = fila.createCell(2);
+            celda.setCellValue(carros.get(i).getMarca());
+            celda = fila.createCell(3);
+            celda.setCellValue(carros.get(i).getNumeroLlantas());
+            celda = fila.createCell(4);
+            celda.setCellValue(carros.get(i).getColor());
+            celda = fila.createCell(5);
+            celda.setCellValue(carros.get(i).getCaballosDeFuerza());
+            celda = fila.createCell(6);
+            celda.setCellValue(carros.get(i).isAutomatico());
+        }
+        
+        try {
+            //5. Escribir el excel en el Disco Duro
+            //Crear fecha + Modificar en el nombre del archivo para obtener cada uno de los datos de la fecha
+            LocalDateTime fechaConHora = LocalDateTime.now(); // Crear una variable con la fecha y hora actuales
+            DateTimeFormatter esDateFormat = DateTimeFormatter.ofPattern("dd_MM_yyyy_hh_mm_ss"); //Formatear la fecha a nuestra necesidad
+            //System.out.println("Formato español (manual): " + fechaConHora.format(esDateFormat)); //Ver la fecha y hora formateadas en consola
+            FileOutputStream archivo = new FileOutputStream("reports/reporte" + fechaConHora.format(esDateFormat) + ".xls"); //Agregar la fecha con formato al archivo
+            libro.write(archivo); //Escribir el libro creado en un archivo
+            archivo.close(); //Buena práctica
+            JOptionPane.showMessageDialog(pnlListar, "Excel generado exitosamente");
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(pnlListar, "Error generando excel");
+            System.out.println("Error leyendo el archivo: " + ex.getMessage());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(pnlListar, "Error generando excel");
+            System.out.println("Error escribiendo en el archivo: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnGenerarExcelActionPerformed
     
     public void mostrarListadoVehiculos(){
         carros = controlador.listarCarros();
@@ -531,6 +716,8 @@ public class frmVehiculo extends javax.swing.JFrame {
         }
         lstVehiculos.setModel(model);
         //lstVehiculos Agregar Elementos
+        
+        refrescarInformeCarrosColor();
     }
     
     public void limpiarFormularioCarros(){
@@ -586,6 +773,7 @@ public class frmVehiculo extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultarCarro;
     private javax.swing.JButton btnCrearCarro;
     private javax.swing.JButton btnEliminarCarro;
+    private javax.swing.JButton btnGenerarExcel;
     private javax.swing.JComboBox<String> cbNumeroLlantasCarro;
     private javax.swing.JCheckBox cboxAutomaticoCarro;
     private javax.swing.JLabel jLabel1;
@@ -601,7 +789,9 @@ public class frmVehiculo extends javax.swing.JFrame {
     private javax.swing.JList<String> lstVehiculos;
     private javax.swing.JPanel pnlCamiones;
     private javax.swing.JPanel pnlCarros;
+    private javax.swing.JPanel pnlInformeVehiculosColor;
     private javax.swing.JPanel pnlListar;
+    private javax.swing.JPanel pnlVehiculosAutomaticos;
     private javax.swing.JTextField txtCaballosFuerzaCarro;
     private javax.swing.JTextField txtCodigoCarro;
     private javax.swing.JTextField txtColorCarro;

@@ -23,8 +23,9 @@ public class clsMecanico {
     }
     
     //Métodos
-    public void repararVehiculo(){
+    public boolean repararVehiculo(clsVehiculo vehiculo){
         System.out.println("Reparando el vehiculo...");
+        return false;
     }
 
     /**

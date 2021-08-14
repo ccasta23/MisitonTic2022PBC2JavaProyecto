@@ -25,8 +25,19 @@ public class clsTallerMecanico extends absCentroReparacion{
     }
     
     //Métodos
-    public void recibirVehiculo(clsVehiculo vehiculo){
-        System.out.println( this.nombre +" - Recibiendo vehiculo " + vehiculo.getMarca() + " y asignandolo al mecánico: " + mecanico.getNombre() );
+    public boolean recibirVehiculo(clsVehiculo vehiculo){
+        System.out.println( this.nombre +" - Recibiendo vehiculo " + vehiculo.getMarca() 
+                + " y asignandolo al mecánico: " + mecanico.getNombre() );
+        boolean seReparo = mecanico.repararVehiculo(vehiculo); //No sabemos cómo se desarrolló
+        if(seReparo){
+            System.out.println("Se pudo reparar");
+            darSalidaAVehiculo();
+            return true;
+        } else {
+            System.out.println("No se pudo reparar");
+            darSalidaAVehiculo();
+            return false;
+        }       
     }
     
     public void darSalidaAVehiculo(){

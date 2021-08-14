@@ -6,6 +6,7 @@
 package controladores;
 
 import classes.clsCarro;
+import classes.clsInformeVehiculoColor;
 import classes.clsVehiculo;
 import java.util.LinkedList;
 import modelos.*;
@@ -71,6 +72,10 @@ public class ctlVehiculos {
     public LinkedList<clsCarro> listarCarros(){
         //Ejecutar y retornar lo que la clase modelo nos retorna
         return modeloCarro.listarCarros();
+    }
+    
+    public LinkedList<clsInformeVehiculoColor> informeVehiculosColor(){
+        return modeloCarro.informeVehiculosColor();
     }
     
 }

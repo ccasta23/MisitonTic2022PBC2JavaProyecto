@@ -6,6 +6,7 @@
 package modelos;
 
 import classes.clsCarro;
+import classes.clsInformeVehiculoColor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -194,6 +195,33 @@ public class modeloCarro {
             System.out.println("Error consultando: " + e.getMessage());
             //La operación falló en BD
             return carros;
+        }
+    }
+    
+    public LinkedList<clsInformeVehiculoColor> informeVehiculosColor(){
+        //Retornar un listado de informes (cantidad, color)
+        LinkedList<clsInformeVehiculoColor> informes = new LinkedList<>();
+        try ( Connection conexion = DriverManager.getConnection(datosBD.getUrl(), datosBD.getUser(), datosBD.getPass()) ) {
+            //Consultar si el carro se encuentra en BD
+            String query = "SELECT color, COUNT(*) as cantidad FROM `tb_vehiculos` " +
+                        "INNER JOIN tb_carros ON tb_vehiculos.id = tb_carros.id_vehiculo " +
+                        "GROUP BY color;";
+            //Preparar la consulta (Evitar SQL Injection)
+            PreparedStatement preparedStatement = conexion.prepareStatement(query);
+            //Obtener las filas resultado de la consulta
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){ //Si la consulta trae como resultado al menos 1 registro
+                clsInformeVehiculoColor informe = new clsInformeVehiculoColor(
+                        rs.getString("color"),
+                        rs.getInt("cantidad")
+                        );
+                informes.add(informe);
+            }
+            return informes;
+        } catch(Exception e){
+            System.out.println("Error consultando: " + e.getMessage());
+            //La operación falló en BD
+            return informes;
         }
     }
     

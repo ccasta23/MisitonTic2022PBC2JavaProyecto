@@ -3,11 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/modelos/modeloCarro.java</file>
-            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/views/frmVehiculo.java</file>
-            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/console/PruebaConexion.java</file>
-            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/modelos/DatosBD.java</file>
             <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/controladores/ctlVehiculos.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/modelos/modeloCarro.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/classes/clsCamionElectrico.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/classes/clsMecanico.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/views/frmVehiculo.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/classes/clsCarro.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/modelos/DatosBD.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/test/vehiculos/tests/TallerMecanicoTest.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/classes/clsTallerMecanico.java</file>
+            <file>file:/C:/Users/CARLOS%20CASTAÑEDA/Documents/NetBeansProjects/POOG75/src/classes/clsInformeVehiculoColor.java</file>
         </group>
     </open-files>
 </project-private>
