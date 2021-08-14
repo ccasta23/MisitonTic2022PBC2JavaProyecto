@@ -129,7 +129,6 @@ public class frmVehiculo extends javax.swing.JFrame {
         txtIdCarro = new javax.swing.JTextField();
         pnlCamiones = new javax.swing.JPanel();
         pnlInformeVehiculosColor = new javax.swing.JPanel();
-        pnlVehiculosAutomaticos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -350,19 +349,6 @@ public class frmVehiculo extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Gráfico vehiculos por color", pnlInformeVehiculosColor);
 
-        javax.swing.GroupLayout pnlVehiculosAutomaticosLayout = new javax.swing.GroupLayout(pnlVehiculosAutomaticos);
-        pnlVehiculosAutomaticos.setLayout(pnlVehiculosAutomaticosLayout);
-        pnlVehiculosAutomaticosLayout.setHorizontalGroup(
-            pnlVehiculosAutomaticosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 699, Short.MAX_VALUE)
-        );
-        pnlVehiculosAutomaticosLayout.setVerticalGroup(
-            pnlVehiculosAutomaticosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 338, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Gráfico vehiculos automaticos", pnlVehiculosAutomaticos);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -388,174 +374,6 @@ public class frmVehiculo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtCodigoCarroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoCarroKeyReleased
-        
-        System.out.println(evt.getKeyCode()); //Obtener código ASCII de la tecla presionada
-        
-        System.out.println("Código: " + txtCodigoCarro.getText()); //Mostrar texto del contenido del cajón de texto
-        
-    }//GEN-LAST:event_txtCodigoCarroKeyReleased
-
-    private void btnCrearCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCarroActionPerformed
-        try {
-            //Intente hacer este código
-            String codigo = txtCodigoCarro.getText();
-            String marca = txtMarcaCarro.getText();
-            int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
-            String color = txtColorCarro.getText();
-            int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
-            boolean automatico = cboxAutomaticoCarro.isSelected();
-
-            //.equals se comporta igual que el operador relacional ==. En java es mejor usar .equals
-            if( codigo.equals("") || marca.equals("") || color.equals("")  ){
-                JOptionPane.showMessageDialog(pnlCarros, "Todos los campos del formulario son obligatorios");
-            } else {
-                //Si la información está correcta, crear un nuevo objeto
-                //Crear un objeto de la clase clsCarro (Los id's se colocan en 0 porque serán colocados por la BD cuando se registren)
-                clsCarro carro_nuevo = new clsCarro(0, automatico, 0, codigo, marca, numeroLlantas, color, caballosFuerza);
-                //Mostrar los datos en consola
-                System.out.println("------------------");
-                System.out.println("Código: " + carro_nuevo.getCodigo());
-                System.out.println("Marca: " + carro_nuevo.getMarca());
-                System.out.println("# Llantas: " + carro_nuevo.getNumeroLlantas());
-                System.out.println("Color: " + carro_nuevo.getColor());
-                System.out.println("Caballos de fuerza: " + carro_nuevo.getCaballosDeFuerza());
-                System.out.println("Automático: " + carro_nuevo.isAutomatico());
-                
-                //Añadir el nuevo carro al listado de carros
-                //carros.add(carro_nuevo); //Ya no es necesario tener un listado de carros, se almacena directamente en la BD
-                //Ejecutar el método crear del controlador
-                controlador.crearVehiculo(carro_nuevo);
-                mostrarListadoVehiculos();
-                limpiarFormularioCarros();
-                JOptionPane.showMessageDialog(pnlCarros, "El carro fue creado exitosamente");
-            }
-            
-        } catch (NumberFormatException e) {
-            //Si algo sale mal con el código de arriba, ejecute este código
-            JOptionPane.showMessageDialog(pnlCarros, "El campo \"Caballos de fuerza\" debe ser numérico");
-        }
-    }//GEN-LAST:event_btnCrearCarroActionPerformed
-
-    private void btnConsultarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarCarroActionPerformed
-        //Capturar el código que está escrito
-        String codigoBuscado = txtCodigoCarro.getText();
-        if(codigoBuscado.equals("")){
-            JOptionPane.showMessageDialog(pnlCarros, "Para consultar debe diligenciar el campo código");
-        } else {
-            //Buscar el código ingresado por la persona en nuestro listado de carros
-//            boolean encontrado = false;
-            
-            //Consultar un carro - Controlador
-            clsCarro carro = (clsCarro) controlador.obtenerVehiculo(codigoBuscado, "Carro");
-            
-            if(carro == null){
-                //No encontró el carro en la Base de datos
-                limpiarFormularioCarros();
-                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
-            } else {
-                //SI se encontró el registro :D
-                txtCodigoCarro.setText(carro.getCodigo());
-                txtMarcaCarro.setText(carro.getMarca());
-                txtColorCarro.setText(carro.getColor());
-                txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
-
-                cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
-                cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
-                
-                //Modificar los campos de ID
-                txtIdVehiculo.setText(carro.getIdVehiculo()+""); //De (int) a (String)
-                txtIdCarro.setText(carro.getIdCarro()+""); //De (int) a (String)
-            }
-            
-            //Esta era la manera anterior en la que trabajabamos antes de las BD
-            //Buscabamos los datos en la lista que teniamos.
-//            for (clsCarro carro : carros) {
-//                if(carro.getCodigo().equals(codigoBuscado) ){
-//                    //¡LO ENCONTRÉ!
-//                    txtCodigoCarro.setText(carro.getCodigo());
-//                    txtMarcaCarro.setText(carro.getMarca());
-//                    txtColorCarro.setText(carro.getColor());
-//                    txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
-//                    
-//                    cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
-//                    cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
-//                    encontrado = true;
-//                    break;
-//                }
-//            }
-//            
-//            if( !encontrado ){
-//                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
-//                limpiarFormularioCarros();
-//            }
-            
-        }
-    }//GEN-LAST:event_btnConsultarCarroActionPerformed
-
-    private void btnActualizarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCarroActionPerformed
-        //Capturar el código que está escrito
-        String idVehiculo = txtIdVehiculo.getText();
-        String idCarro = txtIdCarro.getText();
-        if(idVehiculo.equals("") || idCarro.equals("")){
-            JOptionPane.showMessageDialog(pnlCarros, "Para actualizar un registro, primero debe consultarlo");
-        } else {
-            int idVehiculoInt = Integer.parseInt(idVehiculo);
-            int idCarroInt = Integer.parseInt(idCarro);
-            String codigo = txtCodigoCarro.getText();
-            String marca = txtMarcaCarro.getText();
-            int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
-            String color = txtColorCarro.getText();
-            int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
-            boolean automatico = cboxAutomaticoCarro.isSelected();
-            //Crear nuevo objeto con los datos actualizados
-            clsCarro carro_nuevo = new clsCarro(idCarroInt,automatico, idVehiculoInt,codigo, marca, numeroLlantas, color, caballosFuerza);
-            
-            //Actualizar carro - Controlador
-            if ( controlador.actualizarVehiculo(carro_nuevo)){
-                mostrarListadoVehiculos();
-                limpiarFormularioCarros();
-                JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
-            } else {
-                JOptionPane.showMessageDialog(pnlCarros, "Ocurrió un error al actualizar, por favor verifique los datos");
-            }
-            
-            //Buscar el código ingresado por la persona en nuestro listado de carros
-//            boolean encontrado = false;
-//            int index = 0;
-//            for (clsCarro carro : carros) {
-//                if(carro.getCodigo().equals(codigoBuscado) ){
-//                    //¡LO ENCONTRÉ!
-//                    String codigo = txtCodigoCarro.getText();
-//                    String marca = txtMarcaCarro.getText();
-//                    int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
-//                    String color = txtColorCarro.getText();
-//                    int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
-//                    boolean automatico = cboxAutomaticoCarro.isSelected();
-//                    
-////                    clsCarro carro_nuevo = new clsCarro(automatico, codigo, marca, numeroLlantas, color, caballosFuerza);
-////                    
-////                    carros.set(index, carro_nuevo);
-////                    mostrarListadoVehiculos();
-////                    limpiarFormularioCarros();
-////                    //Actualizar carro - Controlador
-////                    controlador.actualizarVehiculo(codigoBuscado, carro_nuevo);
-////                    JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
-////                    
-////                    encontrado = true;
-////                    break;
-//                }
-//                index++;
-//            }
-//            
-//            if( !encontrado ){
-//                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
-//                limpiarFormularioCarros();
-//            }
-            
-        }
-    }//GEN-LAST:event_btnActualizarCarroActionPerformed
 
     private void btnEliminarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarCarroActionPerformed
         //Capturar el código que está escrito
@@ -586,86 +404,232 @@ public class frmVehiculo extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(pnlCarros, "Ocurrió un error al eliminar, por favor verifique los datos");
                 }
             }
-            
-            
+
             //Buscar el código ingresado por la persona en nuestro listado de carros
-//            boolean encontrado = false;
-//            
-//            for (clsCarro carro : carros) {
-//                if(carro.getCodigo().equals(codigoBuscado) ){
-//                    //¿Está seguro que desea eliminar?
-//                    int respuesta = JOptionPane.showConfirmDialog(pnlCarros, "¿Está seguro que desea eliminar el registro?");
-//                    if( respuesta == JOptionPane.OK_OPTION ){
-//                        //Si el usuario contesta que si, ELIMINAR
-//                        carros.remove(carro);
-//                        mostrarListadoVehiculos();
-//                        limpiarFormularioCarros();
-//                        //Eliminar el registro - CONTROLADOR
-//                        controlador.eliminarVehiculo(carro);
-//                        JOptionPane.showMessageDialog(pnlCarros, "Registro eliminado");
-//                    }
-//                    encontrado = true;
-//                    break;
-//                }
-//            }
-//            
-//            if( !encontrado ){
-//                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
-//                limpiarFormularioCarros();
-//            }
-            
+            //            boolean encontrado = false;
+            //
+            //            for (clsCarro carro : carros) {
+                //                if(carro.getCodigo().equals(codigoBuscado) ){
+                    //                    //¿Está seguro que desea eliminar?
+                    //                    int respuesta = JOptionPane.showConfirmDialog(pnlCarros, "¿Está seguro que desea eliminar el registro?");
+                    //                    if( respuesta == JOptionPane.OK_OPTION ){
+                        //                        //Si el usuario contesta que si, ELIMINAR
+                        //                        carros.remove(carro);
+                        //                        mostrarListadoVehiculos();
+                        //                        limpiarFormularioCarros();
+                        //                        //Eliminar el registro - CONTROLADOR
+                        //                        controlador.eliminarVehiculo(carro);
+                        //                        JOptionPane.showMessageDialog(pnlCarros, "Registro eliminado");
+                        //                    }
+                    //                    encontrado = true;
+                    //                    break;
+                    //                }
+                //            }
+            //
+            //            if( !encontrado ){
+                //                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+                //                limpiarFormularioCarros();
+                //            }
+
         }
     }//GEN-LAST:event_btnEliminarCarroActionPerformed
+
+    private void btnActualizarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCarroActionPerformed
+        //Capturar el código que está escrito
+        String idVehiculo = txtIdVehiculo.getText();
+        String idCarro = txtIdCarro.getText();
+        if(idVehiculo.equals("") || idCarro.equals("")){
+            JOptionPane.showMessageDialog(pnlCarros, "Para actualizar un registro, primero debe consultarlo");
+        } else {
+            int idVehiculoInt = Integer.parseInt(idVehiculo);
+            int idCarroInt = Integer.parseInt(idCarro);
+            String codigo = txtCodigoCarro.getText();
+            String marca = txtMarcaCarro.getText();
+            int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
+            String color = txtColorCarro.getText();
+            int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
+            boolean automatico = cboxAutomaticoCarro.isSelected();
+            //Crear nuevo objeto con los datos actualizados
+            clsCarro carro_nuevo = new clsCarro(idCarroInt,automatico, idVehiculoInt,codigo, marca, numeroLlantas, color, caballosFuerza);
+
+            //Actualizar carro - Controlador
+            if ( controlador.actualizarVehiculo(carro_nuevo)){
+                mostrarListadoVehiculos();
+                limpiarFormularioCarros();
+                JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(pnlCarros, "Ocurrió un error al actualizar, por favor verifique los datos");
+            }
+
+            //Buscar el código ingresado por la persona en nuestro listado de carros
+            //            boolean encontrado = false;
+            //            int index = 0;
+            //            for (clsCarro carro : carros) {
+                //                if(carro.getCodigo().equals(codigoBuscado) ){
+                    //                    //¡LO ENCONTRÉ!
+                    //                    String codigo = txtCodigoCarro.getText();
+                    //                    String marca = txtMarcaCarro.getText();
+                    //                    int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
+                    //                    String color = txtColorCarro.getText();
+                    //                    int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
+                    //                    boolean automatico = cboxAutomaticoCarro.isSelected();
+                    //
+                    ////                    clsCarro carro_nuevo = new clsCarro(automatico, codigo, marca, numeroLlantas, color, caballosFuerza);
+                    ////
+                    ////                    carros.set(index, carro_nuevo);
+                    ////                    mostrarListadoVehiculos();
+                    ////                    limpiarFormularioCarros();
+                    ////                    //Actualizar carro - Controlador
+                    ////                    controlador.actualizarVehiculo(codigoBuscado, carro_nuevo);
+                    ////                    JOptionPane.showMessageDialog(pnlCarros, "Carro actualizado con éxito");
+                    ////
+                    ////                    encontrado = true;
+                    ////                    break;
+                    //                }
+                //                index++;
+                //            }
+            //
+            //            if( !encontrado ){
+                //                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+                //                limpiarFormularioCarros();
+                //            }
+
+        }
+    }//GEN-LAST:event_btnActualizarCarroActionPerformed
+
+    private void btnConsultarCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarCarroActionPerformed
+        //Capturar el código que está escrito
+        String codigoBuscado = txtCodigoCarro.getText();
+        if(codigoBuscado.equals("")){
+            JOptionPane.showMessageDialog(pnlCarros, "Para consultar debe diligenciar el campo código");
+        } else {
+            //Buscar el código ingresado por la persona en nuestro listado de carros
+            //            boolean encontrado = false;
+
+            //Consultar un carro - Controlador
+            clsCarro carro = (clsCarro) controlador.obtenerVehiculo(codigoBuscado, "Carro");
+
+            if(carro == null){
+                //No encontró el carro en la Base de datos
+                limpiarFormularioCarros();
+                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+            } else {
+                //SI se encontró el registro :D
+                txtCodigoCarro.setText(carro.getCodigo());
+                txtMarcaCarro.setText(carro.getMarca());
+                txtColorCarro.setText(carro.getColor());
+                txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
+
+                cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
+                cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
+
+                //Modificar los campos de ID
+                txtIdVehiculo.setText(carro.getIdVehiculo()+""); //De (int) a (String)
+                txtIdCarro.setText(carro.getIdCarro()+""); //De (int) a (String)
+            }
+
+            //Esta era la manera anterior en la que trabajabamos antes de las BD
+            //Buscabamos los datos en la lista que teniamos.
+            //            for (clsCarro carro : carros) {
+                //                if(carro.getCodigo().equals(codigoBuscado) ){
+                    //                    //¡LO ENCONTRÉ!
+                    //                    txtCodigoCarro.setText(carro.getCodigo());
+                    //                    txtMarcaCarro.setText(carro.getMarca());
+                    //                    txtColorCarro.setText(carro.getColor());
+                    //                    txtCaballosFuerzaCarro.setText(carro.getCaballosDeFuerza() + ""); //De (int) a (String)
+                    //
+                    //                    cbNumeroLlantasCarro.setSelectedItem(carro.getNumeroLlantas() + "");
+                    //                    cboxAutomaticoCarro.setSelected( carro.isAutomatico() );
+                    //                    encontrado = true;
+                    //                    break;
+                    //                }
+                //            }
+            //
+            //            if( !encontrado ){
+                //                JOptionPane.showMessageDialog(pnlCarros, "El código " + codigoBuscado + " no se encuentra registrado");
+                //                limpiarFormularioCarros();
+                //            }
+
+        }
+    }//GEN-LAST:event_btnConsultarCarroActionPerformed
+
+    private void btnCrearCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCarroActionPerformed
+        try {
+            //Intente hacer este código
+            String codigo = txtCodigoCarro.getText();
+            String marca = txtMarcaCarro.getText();
+            int numeroLlantas = Integer.parseInt( cbNumeroLlantasCarro.getSelectedItem().toString() );
+            String color = txtColorCarro.getText();
+            int caballosFuerza = Integer.parseInt( txtCaballosFuerzaCarro.getText() );
+            boolean automatico = cboxAutomaticoCarro.isSelected();
+
+            //.equals se comporta igual que el operador relacional ==. En java es mejor usar .equals
+            if( codigo.equals("") || marca.equals("") || color.equals("")  ){
+                JOptionPane.showMessageDialog(pnlCarros, "Todos los campos del formulario son obligatorios");
+            } else {
+                //Si la información está correcta, crear un nuevo objeto
+                //Crear un objeto de la clase clsCarro (Los id's se colocan en 0 porque serán colocados por la BD cuando se registren)
+                clsCarro carro_nuevo = new clsCarro(0, automatico, 0, codigo, marca, numeroLlantas, color, caballosFuerza);
+                //Mostrar los datos en consola
+                System.out.println("------------------");
+                System.out.println("Código: " + carro_nuevo.getCodigo());
+                System.out.println("Marca: " + carro_nuevo.getMarca());
+                System.out.println("# Llantas: " + carro_nuevo.getNumeroLlantas());
+                System.out.println("Color: " + carro_nuevo.getColor());
+                System.out.println("Caballos de fuerza: " + carro_nuevo.getCaballosDeFuerza());
+                System.out.println("Automático: " + carro_nuevo.isAutomatico());
+
+                //Añadir el nuevo carro al listado de carros
+                //carros.add(carro_nuevo); //Ya no es necesario tener un listado de carros, se almacena directamente en la BD
+                //Ejecutar el método crear del controlador
+                controlador.crearVehiculo(carro_nuevo);
+                mostrarListadoVehiculos();
+                limpiarFormularioCarros();
+                JOptionPane.showMessageDialog(pnlCarros, "El carro fue creado exitosamente");
+            }
+
+        } catch (NumberFormatException e) {
+            //Si algo sale mal con el código de arriba, ejecute este código
+            JOptionPane.showMessageDialog(pnlCarros, "El campo \"Caballos de fuerza\" debe ser numérico");
+        }
+    }//GEN-LAST:event_btnCrearCarroActionPerformed
+
+    private void txtCodigoCarroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoCarroKeyReleased
+
+        System.out.println(evt.getKeyCode()); //Obtener código ASCII de la tecla presionada
+
+        System.out.println("Código: " + txtCodigoCarro.getText()); //Mostrar texto del contenido del cajón de texto
+
+    }//GEN-LAST:event_txtCodigoCarroKeyReleased
 
     private void btnGenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarExcelActionPerformed
         //1. Crear libro
         HSSFWorkbook libro = new HSSFWorkbook();
-        
+
         //2. Crear Hoja(s) en el libro
         HSSFSheet hoja = libro.createSheet();
         libro.setSheetName(0, "Vehiculos"); //Asignar un nombre a la hoja en ls posición 0
-        
+
         //2.9 Crear estilos para las celdas (Opcional)
         CellStyle estiloCabecera = libro.createCellStyle();
         estiloCabecera.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex()); //Modificar color de fondo de la celda
         estiloCabecera.setFillPattern(FillPatternType.SOLID_FOREGROUND); // Hacer que el fondo sea sólido
-        
+
         HSSFFont fuente = libro.createFont();
         fuente.setBold(true); //Colocar la fuente en negrita
         estiloCabecera.setFont(fuente);
-        
+
         String[] cabeceras = new String[]{"Id", "Código", "Marca", "Cantidad Llantas", "Color", "Caballos de Fuerza", "¿Automático?"};
-        
+
         //3. Crear filas en las hojas
         HSSFRow cabecera = hoja.createRow(0);
-        
+
         for (int i = 0; i < cabeceras.length; i++) {
             HSSFCell celdaCabecera = cabecera.createCell(i);
             celdaCabecera.setCellValue( cabeceras[i] );
             celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
         }
-//        HSSFCell celdaCabecera = cabecera.createCell(0);
-//        celdaCabecera.setCellValue("Id");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-//        celdaCabecera = cabecera.createCell(1);
-//        celdaCabecera.setCellValue("Código");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-//        celdaCabecera = cabecera.createCell(2);
-//        celdaCabecera.setCellValue("Marca");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-//        celdaCabecera = cabecera.createCell(3);
-//        celdaCabecera.setCellValue("Cantidad Llantas");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-//        celdaCabecera = cabecera.createCell(4);
-//        celdaCabecera.setCellValue("Color");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-//        celdaCabecera = cabecera.createCell(5);
-//        celdaCabecera.setCellValue("Caballos de Fuerza");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-//        celdaCabecera = cabecera.createCell(6);
-//        celdaCabecera.setCellValue("¿Automático?");
-//        celdaCabecera.setCellStyle(estiloCabecera); //Asignar estilos a la celda
-        
+
         for (int i = 0; i < carros.size(); i++) {
             //3. Crear filas en las hojas
             HSSFRow fila = hoja.createRow(i + 1);
@@ -686,7 +650,7 @@ public class frmVehiculo extends javax.swing.JFrame {
             celda = fila.createCell(6);
             celda.setCellValue(carros.get(i).isAutomatico());
         }
-        
+
         try {
             //5. Escribir el excel en el Disco Duro
             //Crear fecha + Modificar en el nombre del archivo para obtener cada uno de los datos de la fecha
@@ -791,7 +755,6 @@ public class frmVehiculo extends javax.swing.JFrame {
     private javax.swing.JPanel pnlCarros;
     private javax.swing.JPanel pnlInformeVehiculosColor;
     private javax.swing.JPanel pnlListar;
-    private javax.swing.JPanel pnlVehiculosAutomaticos;
     private javax.swing.JTextField txtCaballosFuerzaCarro;
     private javax.swing.JTextField txtCodigoCarro;
     private javax.swing.JTextField txtColorCarro;
